@@ -1,6 +1,5 @@
 import pandas as pd
 from evidently_data_analysis import EvidentlyDataAnalysis
-# from evidently_data_analysis.component import StaticReportViewer
 from lightning.app.frontend.web import StaticWebFrontend
 import lightning as L
 
@@ -44,4 +43,20 @@ if __name__ == "__main__":
         ))
 
     # regression use case
+    # ca_housing_df = pd.read_csv('../ca_housing_reg.csv')
+    # total_rows = len(ca_housing_df)
+    # train_length = int(total_rows*0.75)
+
+    # train_df, test_df = ca_housing_df[:train_length], ca_housing_df[train_length:]
+    # train_df.reset_index(drop=True, inplace=True)
+    # test_df.reset_index(drop=True, inplace=True)
+    # train_df.to_csv('../ca_housing_train.csv', index=False)
+    # test_df.to_csv('../ca_housing_test.csv', index=False)
+
+    # app = L.LightningApp(LitApp(
+    #         train_dataframe_path='../ca_housing_train.csv',
+    #         test_dataframe_path='../ca_housing_test.csv',
+    #         target_column_name='MedHouseVal',
+    #         task_type='regression'
+    #     ))
 
