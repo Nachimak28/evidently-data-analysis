@@ -6,6 +6,18 @@ This ⚡ [Lightning component](lightning.ai) ⚡ was generated automatically wit
 lightning init component evidently_data_analysis
 ```
 
+## What problem is this component solving?
+After doing a train-test split of our dataset which is to be used for modelling, this component helps analyse the data trends and any drifts detected in the train and test sets.
+In simple words, it gives us a visual analysis to verify if our train and test sets have somewhat similar distributions or not and if they vary then by what degree.
+
+This component uses Evidently AI to facilitate this data drift detection which is one of the crucial steps in the whole ML development lifecycle.
+
+This is made primarily for tabular dataset analysis and currently supported tasks are classification or regression.
+
+This must be done before jumping into modeling and the app can be extended to include the training along with the model prediction analysis too (Psst, Evidently AI helps there as well)
+
+Stop looking at bland numbers which make limited sense, give the visualization a shot.
+
 ## To run evidently_data_analysis
 
 First, install evidently_data_analysis (warning: this component has not been officially approved on the lightning gallery):
