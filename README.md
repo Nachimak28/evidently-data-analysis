@@ -81,5 +81,5 @@ if __name__ == "__main__":
 
 ## TODO
 
-[] Write relevant tests
-[] Integrate more use cases supported by EvidentlyAI
+- [ ] Write relevant tests
+- [ ] Integrate more use cases supported by EvidentlyAI
