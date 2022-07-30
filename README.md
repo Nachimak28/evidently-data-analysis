@@ -62,3 +62,8 @@ if __name__ == "__main__":
         ))
 
 ```
+
+## Sample Output of the App
+
+![data_drift](https://user-images.githubusercontent.com/23210132/181892630-7a6afe2f-9ed1-43f3-9425-84c45fb8f665.PNG)
+
