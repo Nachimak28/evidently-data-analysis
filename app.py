@@ -3,6 +3,13 @@ from evidently_data_analysis import EvidentlyDataAnalysis
 from lightning.app.frontend.web import StaticWebFrontend
 import lightning as L
 
+class StaticPageViewer(L.LightningFlow):
+    def __init__(self, page_path: str):
+        super().__init__()
+        self.serve_dir = page_path
+
+    def configure_layout(self):
+        return StaticWebFrontend(serve_dir=self.serve_dir)
 
 class LitApp(L.LightningFlow):
     def __init__(self, train_dataframe_path, test_dataframe_path, target_column_name, task_type) -> None:
@@ -16,12 +23,15 @@ class LitApp(L.LightningFlow):
                                                         test_dataframe_path=self.test_dataframe_path,
                                                         target_column_name=self.target_column_name,
                                                         task_type=self.task_type)
+        self.report_render = StaticPageViewer(self.evidently_data_analysis.report_parent_path)
 
     def run(self):
         self.evidently_data_analysis.run()
+        print(self.evidently_data_analysis.report_path)
 
     def configure_layout(self):
-        return StaticWebFrontend('./')
+        tab_1 = {'name': 'Data report', 'content': self.report_render}
+        return tab_1
 
 if __name__ == "__main__":
     # classification use case
