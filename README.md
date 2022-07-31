@@ -7,7 +7,7 @@ lightning init component evidently_data_analysis
 ```
 
 ## Note
-This component is currently not working as expected. Please refrain from using it until this note is removed.
+This component's behaviour is a bit weird. It takes some time for the output to be generated and visible in the browser. Try and refresh a couple of times in the browser to see the output.
 
 ## What problem is this component solving?
 After doing a train-test split of our dataset which is to be used for modelling, this component helps analyse the data trends and any drifts detected in the train and test sets.
