@@ -6,6 +6,9 @@ This ⚡ [Lightning component](lightning.ai) ⚡ was generated automatically wit
 lightning init component evidently_data_analysis
 ```
 
+## Note
+This component is currently not working as expected. Please refrain from using it until this note is removed.
+
 ## What problem is this component solving?
 After doing a train-test split of our dataset which is to be used for modelling, this component helps analyse the data trends and any drifts detected in the train and test sets.
 In simple words, it gives us a visual analysis to verify if our train and test sets have somewhat similar distributions or not and if they vary then by what degree.
