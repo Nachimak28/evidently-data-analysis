@@ -22,7 +22,7 @@ class LitApp(L.LightningFlow):
                                                         train_dataframe_path=self.train_dataframe_path,
                                                         test_dataframe_path=self.test_dataframe_path,
                                                         target_column_name=self.target_column_name,
-                                                        task_type=self.task_type)
+                                                        task_type=self.task_type, parallel=False)
         self.report_render = StaticPageViewer(self.evidently_data_analysis.report_parent_path)
 
     def run(self):

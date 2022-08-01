@@ -7,8 +7,8 @@ from evidently.dashboard.tabs import DataDriftTab, CatTargetDriftTab, NumTargetD
 import tempfile
 
 class EvidentlyDataAnalysis(L.LightningWork):
-    def __init__(self, train_dataframe_path=None, test_dataframe_path=None, target_column_name=None, task_type='classification') -> None:
-        super().__init__()
+    def __init__(self, train_dataframe_path=None, test_dataframe_path=None, target_column_name=None, task_type='classification', parallel=True) -> None:
+        super().__init__(parallel=parallel)
         self.train_dataframe_path = train_dataframe_path
         self.test_dataframe_path = test_dataframe_path
         self.target_column = target_column_name
