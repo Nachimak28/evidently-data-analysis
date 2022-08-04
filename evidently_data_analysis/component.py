@@ -1,5 +1,7 @@
+from cgi import test
 import os
 import lightning as L
+from lightning.app.storage.payload import Payload
 import pandas as pd
 from evidently.dashboard import Dashboard
 from evidently.pipeline.column_mapping import ColumnMapping
@@ -24,17 +26,22 @@ class EvidentlyDataAnalysis(L.LightningWork):
             raise Exception(f'task_type must be {",".join(self.supported_task_types)}')
 
 
-
-    def run(self):
+    def run(self, train_df: Payload=None, test_df: Payload=None):
         col_map = ColumnMapping()
         col_map.target = self.target_column_name
-        train_df = pd.read_csv(self.train_dataframe_path)
-        test_df = pd.read_csv(self.test_dataframe_path)
-        train_df.reset_index(drop=True, inplace=True)
-        train_df.reset_index(drop=True, inplace=True)
-        test_df.reset_index(drop=True, inplace=True)
-
+        if self.train_dataframe_path == None:
+            assert train_df is not None
+            train_df = train_df.value
+        else:
+            train_df = pd.read_csv(self.train_dataframe_path)
         
+        if self.test_dataframe_path == None:
+            assert test_df is not None
+            test_df = test_df.value
+        else:
+            test_df = pd.read_csv(self.test_dataframe_path)
+
+
         tabs = [DataDriftTab(verbose_level=0)]
         if self.task_type == 'classification':
             tabs.append(CatTargetDriftTab(verbose_level=0))
