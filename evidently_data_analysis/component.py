@@ -18,7 +18,7 @@ class EvidentlyDataAnalysis(L.LightningWork):
         self.report_path = None
         tmp_dir = tempfile.mkdtemp()
         self.report_parent_path = os.path.join(tmp_dir, 'data_drift')
-        os.makedirs(self.report_parent_path, exist_ok=True)
+        
 
         self.supported_task_types = ['classification', 'regression']
 
@@ -27,6 +27,7 @@ class EvidentlyDataAnalysis(L.LightningWork):
 
 
     def run(self, train_df: Payload=None, test_df: Payload=None):
+        os.makedirs(self.report_parent_path, exist_ok=True)
         col_map = ColumnMapping()
         col_map.target = self.target_column_name
         if self.train_dataframe_path == None:
