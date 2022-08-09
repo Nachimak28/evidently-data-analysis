@@ -20,8 +20,8 @@ class TempWorkComponent(L.LightningWork):
         self.test_df = None
 
     def run(self):
-        self.train_df = Payload(pd.read_csv('../ba_cancer_train.csv'))
-        self.test_df = Payload(pd.read_csv('../ba_cancer_test.csv'))
+        self.train_df = Payload(pd.read_csv('resources/ba_cancer_train.csv'))
+        self.test_df = Payload(pd.read_csv('resources/ba_cancer_test.csv'))
 
 class LitApp(L.LightningFlow):
     def __init__(self, train_dataframe_path=None, test_dataframe_path=None, target_column_name=None, task_type=None) -> None:
@@ -55,19 +55,9 @@ class LitApp(L.LightningFlow):
 
 if __name__ == "__main__":
     # classification use case
-    cancer_df = pd.read_csv('../bcancer.csv')
-    total_rows = len(cancer_df)
-    train_length = int(total_rows*0.75)
-
-    train_df, test_df = cancer_df[:train_length], cancer_df[train_length:]
-    train_df.reset_index(drop=True, inplace=True)
-    test_df.reset_index(drop=True, inplace=True)
-    train_df.to_csv('../ba_cancer_train.csv', index=False)
-    test_df.to_csv('../ba_cancer_test.csv', index=False)
-
     # app = L.LightningApp(LitApp(
-    #         train_dataframe_path='../ba_cancer_train.csv',
-    #         test_dataframe_path='../ba_cancer_test.csv',
+    #         train_dataframe_path='resources/ba_cancer_train.csv',
+    #         test_dataframe_path='resources/ba_cancer_test.csv',
     #         target_column_name='target',
     #         task_type='classification'
     #     ))
@@ -75,19 +65,10 @@ if __name__ == "__main__":
     app = L.LightningApp(LitApp())
 
     # regression use case
-    # ca_housing_df = pd.read_csv('../ca_housing_reg.csv')
-    # total_rows = len(ca_housing_df)
-    # train_length = int(total_rows*0.75)
-
-    # train_df, test_df = ca_housing_df[:train_length], ca_housing_df[train_length:]
-    # train_df.reset_index(drop=True, inplace=True)
-    # test_df.reset_index(drop=True, inplace=True)
-    # train_df.to_csv('../ca_housing_train.csv', index=False)
-    # test_df.to_csv('../ca_housing_test.csv', index=False)
 
     # app = L.LightningApp(LitApp(
-    #         train_dataframe_path='../ca_housing_train.csv',
-    #         test_dataframe_path='../ca_housing_test.csv',
+    #         train_dataframe_path='resources/ca_housing_train.csv',
+    #         test_dataframe_path='resources/ca_housing_test.csv',
     #         target_column_name='MedHouseVal',
     #         task_type='regression'
     #     ))

@@ -31,6 +31,8 @@ lightning install component https://github.com/theUser/evidently_data_analysis
 
 Once the app is installed, use it in an app:
 
+Example #1
+
 ```python
 
 import pandas as pd
@@ -59,22 +61,40 @@ class LitApp(L.LightningFlow):
 
 if __name__ == "__main__":
     # classification use case
-    cancer_df = pd.read_csv('../bcancer.csv')
-    total_rows = len(cancer_df)
-    train_length = int(total_rows*0.75)
-
-    train_df, test_df = cancer_df[:train_length], cancer_df[train_length:]
-    train_df.reset_index(drop=True, inplace=True)
-    test_df.reset_index(drop=True, inplace=True)
-    train_df.to_csv('../ba_cancer_train.csv', index=False)
-    test_df.to_csv('../ba_cancer_test.csv', index=False)
-
     app = L.LightningApp(LitApp(
-            train_dataframe_path='../ba_cancer_train.csv',
-            test_dataframe_path='../ba_cancer_test.csv',
+            train_dataframe_path='resources/ba_cancer_train.csv',
+            test_dataframe_path='resources/ba_cancer_test.csv',
             target_column_name='target',
             task_type='classification'
         ))
+
+```
+
+Example #2
+```python
+# Note: This is not a complete example but is a demo of providing data to the component during the execution of the run method of some other component instead of providing data during the initialization
+
+# provide payload arguments of the train and test dataframes transferred from another component
+
+# some other component's run method:
+
+class LitApp(L.LightningFlow):
+    def __init__(self):
+        self.other_component = OtherComponent()
+        self.evidently_data_anaylysis = EvidentlyDataAnalysis() #default initialization
+
+    def run(self):
+        self.other_component.run()
+        self.evidently_data_analysis.task_type = 'classification'
+        self.evidently_data_analysis.target_column_name = 'target'
+        # other_component has two attributes which are of type lightning.app.storage.payload.Payload
+        self.evidently_data_analysis.run(
+                                            train_df=self.other_component.train_df, 
+                                            test_df=self.other_component.test_df
+                                        )
+
+if __name__ == "__main__":
+    app = L.LightningApp(LitApp())
 
 ```
 
