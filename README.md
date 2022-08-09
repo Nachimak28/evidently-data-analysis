@@ -26,7 +26,7 @@ Stop looking at bland numbers which make limited sense, give the visualization a
 First, install evidently_data_analysis (warning: this component has not been officially approved on the lightning gallery):
 
 ```bash
-lightning install component https://github.com/theUser/evidently_data_analysis
+lightning install component https://github.com/Nachimak28/evidently-data-analysis
 ```
 
 Once the app is installed, use it in an app:
