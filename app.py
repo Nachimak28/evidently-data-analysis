@@ -30,11 +30,7 @@ class LitApp(L.LightningFlow):
         self.test_dataframe_path = test_dataframe_path
         self.target_column_name = target_column_name
         self.task_type = task_type
-        self.evidently_data_analysis = EvidentlyDataAnalysis(
-                                                        train_dataframe_path=self.train_dataframe_path,
-                                                        test_dataframe_path=self.test_dataframe_path,
-                                                        target_column_name=self.target_column_name,
-                                                        task_type=self.task_type, parallel=False)
+        self.evidently_data_analysis = EvidentlyDataAnalysis()
 
 
 
