@@ -1,4 +1,4 @@
-# evidently_data_analysis component
+# evidently_data_analysis component - WIP
 
 This ⚡ [Lightning component](lightning.ai) ⚡ was generated automatically with:
 
