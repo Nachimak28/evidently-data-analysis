@@ -7,17 +7,16 @@ lightning init component evidently_data_analysis
 ```
 
 ## Note
-This component's behaviour is a bit weird. It takes some time for the output to be generated and visible in the browser. Try and refresh a couple of times in the browser to see the output.
+It takes some time for the output to be generated and visible in the browser. Try and refresh a couple of times in the browser to see the output.
 
 ## What problem is this component solving?
-After doing a train-test split of our dataset which is to be used for modelling, this component helps analyse the data trends and any drifts detected in the train and test sets.
-In simple words, it gives us a visual analysis to verify if our train and test sets have somewhat similar distributions or not and if they vary then by what degree.
+After doing a train-test split of our dataset which is to be used for modelling or to compare the data distributions of training data vs incoming data in production(test data), this component helps analyse the data trends and any drifts detected in the train and test sets. In simple words, it gives us a visual analysis to verify if our train and test sets have somewhat similar distributions or not and if they vary then by what degree.
 
 This component uses Evidently AI to facilitate this data drift detection which is one of the crucial steps in the whole ML development lifecycle.
 
 This is made primarily for tabular dataset analysis and currently supported tasks are classification or regression.
 
-This must be done before jumping into modeling and the app can be extended to include the training along with the model prediction analysis too (Psst, Evidently AI helps there as well)
+This must be done before jumping into modeling and the app can be extended to include the training along with the model prediction analysis too (Evidently AI helps for model prediction analysis as well)
 
 Stop looking at bland numbers which make limited sense, give the visualization a shot.
 
@@ -31,7 +30,7 @@ lightning install component https://github.com/Nachimak28/evidently-data-analysi
 
 Once the app is installed, use it in an app:
 
-Example #1
+Example #1 - Passing data during initialization
 
 ```python
 
@@ -51,7 +50,8 @@ class LitApp(L.LightningFlow):
                                                         train_dataframe_path=self.train_dataframe_path,
                                                         test_dataframe_path=self.test_dataframe_path,
                                                         target_column_name=self.target_column_name,
-                                                        task_type=self.task_type)
+                                                        task_type=self.task_type
+                                                        )
 
     def run(self):
         self.evidently_data_analysis.run()
@@ -104,5 +104,5 @@ if __name__ == "__main__":
 
 ## TODO
 
-- [ ] Write relevant tests
-- [ ] Integrate more use cases supported by EvidentlyAI
+- [x] Write relevant tests
+- [x] Integrate more use cases supported by EvidentlyAI (only 2 use cases - classification and regression supported and they're covered in this component)
