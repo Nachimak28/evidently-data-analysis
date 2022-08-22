@@ -109,7 +109,7 @@ class EvidentlyDataAnalysis(L.LightningWork):
             test_df = test_df.value
         else:
             if os.path.exists(self.test_dataframe_path):
-                train_df = pd.read_csv(self.test_dataframe_path)
+                test_df = pd.read_csv(self.test_dataframe_path)
             else:
                 raise FileNotFoundError('Test dataframe path does not exist, please provide valid path')
 
