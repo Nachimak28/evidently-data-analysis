@@ -43,7 +43,6 @@ class LitApp(L.LightningFlow):
         self.evidently_data_analysis.target_column_name = 'target'
 
         self.evidently_data_analysis.run(train_df=self.temp_component.train_df, test_df=self.temp_component.test_df)
-        print(self.evidently_data_analysis.report_path)
 
     def configure_layout(self):
         tab_1 = {'name': 'Data report', 'content': self.report_render}
