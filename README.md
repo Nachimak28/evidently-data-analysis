@@ -38,7 +38,7 @@ conda activate evidently
 python -m pip install -r requirements.txt
 python -m pip install lightning
 python -m lightning run app app.py
-python -m lightning run app app.py
+python -m lightning run app app.py --cloud
 ```
 
 Once the app is installed, use it in an app:
