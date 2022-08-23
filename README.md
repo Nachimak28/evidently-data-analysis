@@ -28,6 +28,19 @@ First, install evidently_data_analysis (warning: this component has not been off
 lightning install component https://github.com/Nachimak28/evidently-data-analysis
 ```
 
+If the above does not work, manually setup the environment:
+
+```bash
+git clone https://github.com/Nachimak28/evidently-data-analysis
+cd evidently-data-analysis
+conda create --yes --name evidently python=3.8
+conda activate evidently
+python -m pip install -r requirements.txt
+python -m pip install lightning
+python -m lightning run app app.py
+python -m lightning run app app.py
+```
+
 Once the app is installed, use it in an app:
 
 Example #1 - Passing data during initialization

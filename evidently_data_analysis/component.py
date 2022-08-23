@@ -3,9 +3,12 @@ import logging
 import tempfile
 import pandas as pd
 from typing import Optional
+from flask import Flask, send_file
 
 import lightning as L
 from lightning.app.storage.payload import Payload
+from lightning.app.storage.path import Path
+
 
 from evidently.dashboard import Dashboard
 from evidently.pipeline.column_mapping import ColumnMapping
@@ -14,13 +17,13 @@ from evidently.dashboard.tabs import DataDriftTab, CatTargetDriftTab, NumTargetD
 from .utils import check_if_valid_dataframe
 
 class EvidentlyDataAnalysis(L.LightningWork):
-    def __init__(self, 
+    def __init__(self, *args,
                 train_dataframe_path: Optional[str]=None, 
                 test_dataframe_path: Optional[str]=None, 
                 target_column_name: Optional[str]=None, 
                 task_type: str='classification', 
                 parallel: bool=False, 
-                report_parent_path: str=None) -> None:
+                report_parent_path: str=None, **kwargs) -> None:
         """
         A Simple Lightning component which uses EvidentlyAI to generate an interactive data dashboard for train and test data.
         The data report is stored in an HTML file to the path of your choosing or a temp path
@@ -48,7 +51,7 @@ class EvidentlyDataAnalysis(L.LightningWork):
         -------
         None
         """
-        super().__init__(parallel=parallel)
+        super().__init__(*args, parallel=parallel, **kwargs)
 
         self.train_dataframe_path = train_dataframe_path
         self.test_dataframe_path = test_dataframe_path
@@ -136,8 +139,15 @@ class EvidentlyDataAnalysis(L.LightningWork):
 
         # the HTML file must be names index.html only for lightning component to pick and render it
         # Reference: https://lightning.ai/lightning-docs/api_reference/generated/lightning_app.frontend.web.StaticWebFrontend.html#lightning_app.frontend.web.StaticWebFrontend
-        self.report_path = os.path.join(self.report_parent_path, 'index.html')
+        report_path = os.path.join(self.report_parent_path, 'index.html')
         
         # save the report to the path
-        data_and_target_drift_dashboard.save(self.report_path)
+        data_and_target_drift_dashboard.save(report_path)
+        self.report_path = Path(report_path)		
         logging.info('Dashboard generated successfully')
+				# serve the report
+        flask_app = Flask(__name__)
+        @flask_app.route("/")
+        def hello():
+            return send_file(report_path)
+        flask_app.run(host=self.host, port=self.port)				
