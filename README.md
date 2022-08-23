@@ -65,13 +65,12 @@ class LitApp(L.LightningFlow):
                                                         target_column_name=self.target_column_name,
                                                         task_type=self.task_type
                                                         )
-        self.report_render = StaticWebFrontend(self.evidently_data_analysis.report_parent_path)
 
     def run(self):
         self.evidently_data_analysis.run()
 
     def configure_layout(self):
-        tab_1 = {'name': 'Data report', 'content': self.report_render}
+        tab_1 = {'name': 'Data report', 'content': self.evidently_data_analysis}
         return tab_1
 
 if __name__ == "__main__":
@@ -97,7 +96,6 @@ class LitApp(L.LightningFlow):
     def __init__(self):
         self.other_component = OtherComponent()
         self.evidently_data_anaylysis = EvidentlyDataAnalysis() #default initialization
-        self.report_render = StaticWebFrontend(self.evidently_data_analysis.report_parent_path)
 
     def run(self):
         self.other_component.run()
@@ -112,7 +110,7 @@ class LitApp(L.LightningFlow):
     
     def configure_layout(self):
         tabs = []
-        tab_1 = {'name': 'Data report', 'content': self.report_render}
+        tab_1 = {'name': 'Data report', 'content': self.evidently_data_analysis}
         # tab_2 = ...  some other frontend
         # tab_3 = ...  some other frontend
         tabs.append(tab_1)
@@ -133,4 +131,4 @@ if __name__ == "__main__":
 
 - [x] Write relevant tests
 - [x] Integrate more use cases supported by EvidentlyAI (only 2 use cases - classification and regression supported and they're covered in this component)
-- [ ] Test in lightning cloud
+- [x] Test in lightning cloud
