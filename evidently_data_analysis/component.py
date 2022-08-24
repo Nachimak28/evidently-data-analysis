@@ -134,18 +134,21 @@ class EvidentlyDataAnalysis(L.LightningWork):
         else:
             tabs.append(NumTargetDriftTab(verbose_level=0))
         
+        # build the dashboard
         data_and_target_drift_dashboard = Dashboard(tabs=tabs)
         data_and_target_drift_dashboard.calculate(train_df, test_df, column_mapping=col_map)
 
         # the HTML file must be names index.html only for lightning component to pick and render it
         # Reference: https://lightning.ai/lightning-docs/api_reference/generated/lightning_app.frontend.web.StaticWebFrontend.html#lightning_app.frontend.web.StaticWebFrontend
+        # StaticWebFrontend works locally but does not work in lightning cloud - using Flask instead
         report_path = os.path.join(self.report_parent_path, 'index.html')
         
         # save the report to the path
         data_and_target_drift_dashboard.save(report_path)
         self.report_path = Path(report_path)		
         logging.info('Dashboard generated successfully')
-				# serve the report
+        
+        # serve the report using flask
         flask_app = Flask(__name__)
         @flask_app.route("/")
         def hello():

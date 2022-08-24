@@ -1,7 +1,6 @@
 from lightning.app.storage.payload import Payload
 import pandas as pd
 from evidently_data_analysis import EvidentlyDataAnalysis
-from lightning.app.frontend.web import StaticWebFrontend
 import lightning as L
 
 class LoadData(L.LightningWork):
