@@ -4,18 +4,9 @@ from evidently_data_analysis import EvidentlyDataAnalysis
 from lightning.app.frontend.web import StaticWebFrontend
 import lightning as L
 
-class StaticPageViewer(L.LightningFlow):
-    def __init__(self, page_path: str):
-        super().__init__()
-        self.serve_dir = page_path
-
-    def configure_layout(self):
-        return StaticWebFrontend(serve_dir=self.serve_dir)
-
-
-class TempWorkComponent(L.LightningWork):
-    def __init__(self, parallel=True) -> None:
-        super().__init__(parallel=parallel)
+class LoadData(L.LightningWork):
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
         self.train_df = None
         self.test_df = None
 
@@ -30,23 +21,25 @@ class LitApp(L.LightningFlow):
         self.test_dataframe_path = test_dataframe_path
         self.target_column_name = target_column_name
         self.task_type = task_type
-        self.evidently_data_analysis = EvidentlyDataAnalysis()
-
-
-
-        self.report_render = StaticPageViewer(self.evidently_data_analysis.report_parent_path)
-        self.temp_component = TempWorkComponent(parallel=False)
+				# Flask won't return 
+        self.evidently_data_analysis = EvidentlyDataAnalysis(parallel=True, cloud_compute=L.CloudCompute("default"))
+        self.load_data_component = LoadData(parallel=True, cloud_compute=L.CloudCompute("default"))
 
     def run(self):
-        self.temp_component.run()
+        self.load_data_component.run()
         self.evidently_data_analysis.task_type = 'classification'
         self.evidently_data_analysis.target_column_name = 'target'
-
-        self.evidently_data_analysis.run(train_df=self.temp_component.train_df, test_df=self.temp_component.test_df)
+				# wait for load_data_component make Payload available
+        if self.load_data_component.train_df and self.load_data_component.test_df:
+          self.evidently_data_analysis.run(train_df=self.load_data_component.train_df, test_df=self.load_data_component.test_df)
 
     def configure_layout(self):
-        tab_1 = {'name': 'Data report', 'content': self.report_render}
-        return tab_1
+			# wait for work to complete so that manual refresh is not required
+      if self.evidently_data_analysis.report_path:
+        tab_1 = {'name': 'Data report', 'content': self.evidently_data_analysis}
+      else:
+        tab_1 = []
+      return tab_1
 
 if __name__ == "__main__":
     # classification use case
