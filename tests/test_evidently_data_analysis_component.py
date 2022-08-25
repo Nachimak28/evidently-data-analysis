@@ -23,7 +23,7 @@ def test_component_init_classification_example():
         task_type='classification',
         parallel=False
     )
-    eda.run()
+    eda.build_dashboard()
     assert eda.report_path != None and 'index.html' in eda.report_path
 
 # test when args passed during init for regression
@@ -35,7 +35,7 @@ def test_component_init_regression_example():
         task_type='regression',
         parallel=False
     )
-    eda.run()
+    eda.build_dashboard()
     assert eda.report_path != None and 'index.html' in eda.report_path
 
 # test if report is built as path specified
@@ -49,7 +49,7 @@ def test_report_path():
         parallel=False,
         report_parent_path=report_parent_path
     )
-    eda.run()
+    eda.build_dashboard()
     parent_path, report_filename = os.path.split(eda.report_path)
     assert parent_path == report_parent_path
     assert report_filename == 'index.html'
@@ -71,7 +71,7 @@ def test_component_args_during_run():
     eda.target_column_name = target_column_name
     eda.task_type = task_type
     
-    eda.run(train_df=Payload(train_df), test_df=Payload(test_df))
+    eda.build_dashboard(train_df=Payload(train_df), test_df=Payload(test_df))
     assert eda.report_path != None and 'index.html' in eda.report_path
 
 # test when args are not valid payload objects
@@ -87,7 +87,7 @@ def test_idenfity_invalid_payload_inputs():
     train_df = 'ABCD'
     test_df = 1234
     try:
-        eda.run(train_df=train_df, test_df=test_df)
+        eda.build_dashboard(train_df=train_df, test_df=test_df)
     except Exception as e:
         assert isinstance(e, TypeError)
     
@@ -105,7 +105,7 @@ def test_idenfity_invalid_dataframe_inputs():
     train_df = Payload('ABCD')
     test_df = Payload(1234)
     try:
-        eda.run(train_df=train_df, test_df=test_df)
+        eda.build_dashboard(train_df=train_df, test_df=test_df)
     except Exception as e:
         assert isinstance(e, TypeError)
 
@@ -113,7 +113,7 @@ def test_idenfity_invalid_dataframe_inputs():
 # test to check the compoment behaviour if NaN/null values are present in input dataframes
 def test_component_behavior_nan():
     # loading a valid dataframe with no nans
-    train_df = pd.read_csv('../resources/ba_cancer_train.csv')
+    train_df = pd.read_csv('../resources/ba_cancer_train_with_nans.csv')
     test_df = pd.read_csv('../resources/ba_cancer_test.csv')
     
     # inserting NaNs at random places in the dataframe
@@ -130,7 +130,6 @@ def test_component_behavior_nan():
     eda.task_type = task_type
 
     try:
-        eda.run(train_df=Payload(train_df), test_df=Payload(test_df))
+        eda.build_dashboard(train_df=Payload(train_df), test_df=Payload(test_df))
     except Exception as e:
         assert isinstance(e, AssertionError)
-        assert str(e) == 'Nan/Null values not allowed'
