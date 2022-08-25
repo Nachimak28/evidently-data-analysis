@@ -68,7 +68,7 @@ class EvidentlyDataAnalysis(L.LightningWork):
         else:
             tmp_dir = tempfile.mkdtemp()
             self.report_parent_path = os.path.join(tmp_dir, 'data_drift')
-        os.makedirs(self.report_parent_path, exist_ok=True)
+        
 
         # supported task types
         self.supported_task_types = ['classification', 'regression']
@@ -90,6 +90,7 @@ class EvidentlyDataAnalysis(L.LightningWork):
             The testing dataframe passed as a pandas dataframe object
 
         """
+        os.makedirs(self.report_parent_path, exist_ok=True)
         # define the column mapping to their type (categorical/numeric/target etc)
         # evidently generally discovers the column types by itself but passing can be set explicitly
         self._col_map = ColumnMapping()
@@ -141,6 +142,7 @@ class EvidentlyDataAnalysis(L.LightningWork):
         # save the report to the path
         data_and_target_drift_dashboard.save(report_path)
         self.report_path = report_path
+
         logging.info('Dashboard generated successfully')
 
 
@@ -158,12 +160,10 @@ class EvidentlyDataAnalysis(L.LightningWork):
             The testing dataframe passed as a pandas dataframe object
         
         """
-
         # build the dashboard
         self.build_dashboard(train_df=train_df, test_df=test_df)
-
-        self.report_path = Path(self.report_path)
         
+        self.report_path = Path(self.report_path)
         # serve the report using flask
         flask_app = Flask(__name__)
         @flask_app.route("/")
