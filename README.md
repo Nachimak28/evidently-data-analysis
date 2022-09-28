@@ -1,4 +1,4 @@
-# evidently_data_analysis component - WIP
+# evidently_data_analysis component
 
 This ⚡ [Lightning component](lightning.ai) ⚡ was generated automatically with:
 
@@ -19,6 +19,12 @@ This is made primarily for tabular dataset analysis and currently supported task
 This must be done before jumping into modeling and the app can be extended to include the training along with the model prediction analysis too (Evidently AI helps for model prediction analysis as well)
 
 Stop looking at bland numbers which make limited sense, give the visualization a shot.
+
+## What kind of input does the component expect?
+
+Dataframes with the following characteristics - numeric, textual and categorical columns with no missing values (an exception will be raised is data is missing). 
+No time-series or date time supported as of now. If Date-time columns are preprocessed to make them discrete/categorical values, they shall be considered.
+Any suggestions to improve the input possibilities are accepted.
 
 ## To run evidently_data_analysis
 
